@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--https://www.youtube.com/watch?v=MXOYkZ59-zE&t=6s-->
+<script>
+    var app = new PIXI.Application();
+    document.body.appendChild(app.view);
+
+
+    var background = PIXI.Sprite.fromImage('bg.png');
+    background.width = app.renderer.width;
+    background.height = app.renderer.height;
+    app.stage.addChild(background);
+
+    app.stop();
+
+    PIXI.loader.add('shader', 'shader.frag').load(onLoaded);
+
+    var filter;
+
+    function onLoaded(loader, res) {
+        filter = new PIXI.Filter(null, res.shader.data);
+        
+        background.filters = [filter];
+        
+        app.start();
+    }
+    
+    app.ticker.add(function (delta) {
+        filter.uniforms.customUniform += 0.04 + delta;
+    });
+
+</script>
+</body>
+</html>
